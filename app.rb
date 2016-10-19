@@ -3,7 +3,7 @@ require './env' if File.exist?('env.rb')
 require 'braintree'
 require 'json'
 
-Braintree::Configuration.environment = :sandbox
+Braintree::Configuration.environment = ENV['BRAINTREE_ENV']
 Braintree::Configuration.merchant_id = ENV['BRAINTREE_MERCHANT_ID']
 Braintree::Configuration.public_key = ENV['BRAINTREE_PUBLIC_KEY']
 Braintree::Configuration.private_key = ENV['BRAINTREE_PRIVATE_KEY']
