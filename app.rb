@@ -1,8 +1,8 @@
 require 'sinatra'
-require './env' if File.exist?('env.rb')
+require 'dotenv'
 require 'braintree'
 require 'json'
-
+Dotenv.load
 Braintree::Configuration.environment = ENV['BRAINTREE_ENV']
 Braintree::Configuration.merchant_id = ENV['BRAINTREE_MERCHANT_ID']
 Braintree::Configuration.public_key = ENV['BRAINTREE_PUBLIC_KEY']
@@ -27,7 +27,7 @@ post '/api/v1/transactions' do
   else
     status 422
     { success: false, error: "Something went wrong while processing your transaction. Please try again!" }.to_json
-  end  
+  end
 end
 
 def generate_client_token
