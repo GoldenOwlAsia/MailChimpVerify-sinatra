@@ -7,3 +7,6 @@ Quickly validate Braintree:
     BRAINTREE_PUBLIC_KEY
     BRAINTREE_PRIVATE_KEY
     BRAINTREE_ENV
+    
+Run Server
+    ruby app.rb
