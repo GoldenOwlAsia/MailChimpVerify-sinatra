@@ -9,4 +9,5 @@ Quickly validate Braintree:
     BRAINTREE_ENV
     
 Run Server
+    
     ruby app.rb
