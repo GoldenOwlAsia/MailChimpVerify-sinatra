@@ -3,7 +3,6 @@ require 'dotenv'
 require 'braintree'
 require 'json'
 require 'stripe'
-require 'puma'
 require 'byebug'
 Dotenv.load
 Braintree::Configuration.environment = ENV['BRAINTREE_ENV']
@@ -62,7 +61,6 @@ post '/api/v1/stripe/charge' do
   @charge = Stripe::Charge.create(
     amount: params[:amount],
     description: params[:description_charge],
-    currency: 'usd',
     customer: @customer.id
   )
 
