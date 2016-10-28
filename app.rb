@@ -61,6 +61,7 @@ post '/api/v1/stripe/charge' do
   @charge = Stripe::Charge.create(
     amount: params[:amount],
     description: params[:description_charge],
+    currency: params[:currency],
     customer: @customer.id
   )
 
