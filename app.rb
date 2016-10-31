@@ -75,25 +75,29 @@ post '/api/v1/stripe/charge' do
 end
 
 post '/api/v1/stripe/charge_payment' do
-  @result = Stripe::Token.create(
-    card: {
-      number: params[:number],
-      exp_month: params[:exp_month],
-      exp_year: params[:exp_year],
-      cvc: params[:cvc]
-    }
-  )
+  begin
+    @result = Stripe::Token.create(
+      card: {
+        number: params[:number],
+        exp_month: params[:exp_month],
+        exp_year: params[:exp_year],
+        cvc: params[:cvc]
+      }
+    )
 
-  @customer = Stripe::Customer.create(
-    email: params[:email],
-    source: @result.id
-  ) if @result
+    @customer = Stripe::Customer.create(
+      email: params[:email],
+      source: @result.id
+    ) if @result
 
-  @charge = Stripe::Charge.create(
-    amount: params[:amount],
-    currency: params[:currency],
-    customer: @customer.id
-  ) if @customer
+    @charge = Stripe::Charge.create(
+      amount: params[:amount],
+      currency: params[:currency],
+      customer: @customer.id
+    )
+  rescue Stripe::StripeError => e
+    { success: false, message: e.message }.to_json
+  end
 
   if @charge
     status 201
