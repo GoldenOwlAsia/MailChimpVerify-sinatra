@@ -74,6 +74,36 @@ post '/api/v1/stripe/charge' do
   end
 end
 
+post '/api/v1/stripe/charge_payment' do
+  @result = Stripe::Token.create(
+    card: {
+      number: params[:number],
+      exp_month: params[:exp_month],
+      exp_year: params[:exp_year],
+      cvc: params[:cvc]
+    }
+  )
+
+  @customer = Stripe::Customer.create(
+    email: params[:email],
+    source: @result.id
+  ) if @result
+
+  @charge = Stripe::Charge.create(
+    amount: params[:amount],
+    currency: params[:currency],
+    customer: @customer.id
+  ) if @customer
+
+  if @charge
+    status 201
+    { success: true }.to_json
+  else
+    status 422
+    { success: false }.to_json
+  end
+end
+
 def generate_client_token
   Braintree::ClientToken.generate
 end
