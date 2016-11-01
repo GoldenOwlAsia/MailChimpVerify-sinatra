@@ -93,6 +93,7 @@ post '/api/v1/stripe/charge_payment' do
     @charge = Stripe::Charge.create(
       amount: params[:amount],
       currency: params[:currency],
+      description: params[:description],
       customer: @customer.id
     )
   rescue Stripe::StripeError => e
